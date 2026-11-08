@@ -40,3 +40,4 @@ build/
 
 ### Banco de dados H2 local (gerado ao rodar a API) ###
 dados/
+.idea/
