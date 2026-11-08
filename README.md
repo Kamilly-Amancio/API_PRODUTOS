@@ -1,17 +1,57 @@
-# Desafio Prático Final Evolução da API de Produtos
+# API de Produtos: Controle de Estoque
 
-## Tema: Implementação de Controle de Estoque com Java, Javalin, JDBC e H2
+Desafio Prático Final: evolução da API de Produtos com implementação de
+controle de estoque, usando Java, Javalin, JDBC e H2.
 
-A API de Produtos já disponibiliza operações REST de cadastro, consulta, atualização e exclusão, organizadas em Controller, Service e Repository, com persistência em H2 via JDBC e documentação Swagger. Entretanto, não há controle de unidades disponíveis. A missão é evoluir a aplicação existente, preservando a arquitetura e implementando regras de estoque.Aplicar orientação a objetos, interfaces, SOLID, separação de responsabilidades, REST, SQL e JDBC em uma melhoria funcional verificável da API, sem reconstruir o projeto do zero.
+## Descrição
+
+A API já oferecia as operações REST de cadastro, consulta, atualização e
+exclusão de produtos. Este projeto a evolui com **controle de unidades
+disponíveis em estoque**, preservando a arquitetura existente
+(Controller, Service e Repository) e aplicando orientação a objetos,
+interfaces, princípios SOLID, REST, SQL e JDBC.
 
 ## Tecnologias utilizadas
 
-- JAVA
-- Product Version: Apache NetBeans IDE 30
-- Java: 27.0.1.0.3; Java HotSpot(TM) 64-Bit Server VM 27.0.1.0.3+1-2
-- Runtime: Java(TM) SE Runtime Environment 27.0.1.0.3+1-2
+- Java 21
+- Javalin 6.7.0 (framework da API REST)
+- JDBC (acesso ao banco de dados)
+- H2 Database 2.3.232 (banco de dados)
+- Jackson (serialização JSON)
+- Swagger / OpenAPI (documentação dos endpoints)
+- SLF4J Simple (logs)
+- Maven (gerenciamento de dependências e build)
+- Git e GitHub
 
-## Autor: 
+## Arquitetura
 
-KAMILLY AMANCIO 
+O projeto é organizado em camadas:
+
+- **Controller**: recebe as requisições HTTP e devolve as respostas.
+- **Service**: concentra as regras de negócio (incluindo as regras de estoque).
+- **Repository**: acesso ao banco via JDBC.
+
+## Regras de estoque implementadas
+
+- Produtos possuem o campo `quantidadeEstoque`.
+- Não é permitido cadastrar produto com estoque negativo.
+- Endpoint para adicionar unidades ao estoque.
+- Endpoint para remover unidades (baixa), bloqueando quando o estoque for insuficiente.
+
+## Endpoints
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| GET | `/produtos` | Lista os produtos |
+| GET | `/produtos/{id}` | Busca produto por id |
+| POST | `/produtos` | Cadastra produto |
+| PUT | `/produtos/{id}` | Atualiza produto |
+| DELETE | `/produtos/{id}` | Remove produto |
+| [AJUSTE] | [rota de estoque] | [descrição] |
+
+## Autor:
+KAMILLY AMANCIO
+
+## Disciplina: 
+Projeto e Implementacao Orientado a Objetos
 
