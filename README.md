@@ -7,6 +7,9 @@ A API de Produtos já disponibiliza operações REST de cadastro, consulta, atua
 ## Tecnologias utilizadas
 
 - JAVA
+- Product Version: Apache NetBeans IDE 30
+- Java: 27.0.1.0.3; Java HotSpot(TM) 64-Bit Server VM 27.0.1.0.3+1-2
+- Runtime: Java(TM) SE Runtime Environment 27.0.1.0.3+1-2
 
 ## Autor: 
 
