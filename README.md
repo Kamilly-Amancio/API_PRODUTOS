@@ -1,4 +1,4 @@
-\#Desafio Prático Final Evolução da API de Produtos
+#Desafio Prático Final Evolução da API de Produtos
 
 
 
@@ -18,13 +18,11 @@ JDBC em uma melhoria funcional verificável da API, sem reconstruir o projeto do
 
 
 
-\##Tecnologias utilizadas
+##Tecnologias utilizadas
 
-* JAVA
+- JAVA
 
-
-
-\## Autor: 
+## Autor: 
 
 KAMILLY AMANCIO 
 
