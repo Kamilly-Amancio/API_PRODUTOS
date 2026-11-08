@@ -1,0 +1,237 @@
+openapi: 3.0.3
+
+info:
+  title: API de Produtos
+  version: 1.0.0
+  description: API REST desenvolvida com Java 21 e Javalin.
+
+servers:
+  - url: http://localhost:7000
+
+tags:
+  - name: Produtos
+    description: Operações de gerenciamento de produtos
+  - name: Estoque
+    description: Controle de estoque dos produtos
+
+paths:
+  /produtos:
+    get:
+      tags: [Produtos]
+      summary: Listar todos os produtos
+      responses:
+        '200':
+          description: Lista de produtos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Produto'
+
+    post:
+      tags: [Produtos]
+      summary: Cadastrar um produto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProdutoEntrada'
+      responses:
+        '201':
+          description: Produto cadastrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Produto'
+        '400':
+          description: Dados inválidos
+
+  /produtos/estoque-baixo:
+    get:
+      tags: [Estoque]
+      summary: Listar produtos com estoque menor ou igual ao limite
+      parameters:
+        - name: limite
+          in: query
+          required: true
+          description: Estoque máximo (inclusive) para listar
+          schema:
+            type: integer
+            minimum: 0
+            example: 5
+      responses:
+        '200':
+          description: Produtos com estoque baixo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Produto'
+        '400':
+          description: Limite ausente ou inválido
+
+  /produtos/{id}/estoque/entrada:
+    post:
+      tags: [Estoque]
+      summary: Registrar entrada de unidades no estoque
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Identificador do produto
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovimentacaoEstoque'
+      responses:
+        '200':
+          description: Entrada registrada; retorna o produto atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Produto'
+        '400':
+          description: Quantidade inválida (deve ser inteiro maior que zero)
+        '404':
+          description: Produto não encontrado
+
+  /produtos/{id}/estoque/saida:
+    post:
+      tags: [Estoque]
+      summary: Registrar saída de unidades do estoque
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Identificador do produto
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovimentacaoEstoque'
+      responses:
+        '200':
+          description: Saída registrada; retorna o produto atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Produto'
+        '400':
+          description: Quantidade inválida ou estoque insuficiente
+        '404':
+          description: Produto não encontrado
+
+  /produtos/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Identificador do produto
+        schema:
+          type: integer
+          format: int64
+
+    get:
+      tags: [Produtos]
+      summary: Buscar produto por ID
+      responses:
+        '200':
+          description: Produto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Produto'
+        '404':
+          description: Produto não encontrado
+
+    put:
+      tags: [Produtos]
+      summary: Atualizar um produto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProdutoEntrada'
+      responses:
+        '200':
+          description: Produto atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Produto'
+        '400':
+          description: Dados inválidos
+        '404':
+          description: Produto não encontrado
+
+    delete:
+      tags: [Produtos]
+      summary: Excluir um produto
+      responses:
+        '204':
+          description: Produto excluído
+        '404':
+          description: Produto não encontrado
+
+components:
+  schemas:
+    ProdutoEntrada:
+      type: object
+      required:
+        - nome
+        - preco
+      properties:
+        nome:
+          type: string
+          example: Notebook
+        preco:
+          type: number
+          format: double
+          example: 3500.00
+        quantidadeEstoque:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Estoque inicial (opcional; padrão 0)
+          example: 10
+
+    MovimentacaoEstoque:
+      type: object
+      required:
+        - quantidade
+      properties:
+        quantidade:
+          type: integer
+          minimum: 1
+          example: 10
+
+    Produto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        nome:
+          type: string
+          example: Notebook
+        preco:
+          type: number
+          format: double
+          example: 3500.00
+        quantidadeEstoque:
+          type: integer
+          example: 10
